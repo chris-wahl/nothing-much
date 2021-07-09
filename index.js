@@ -1,9 +1,27 @@
 "use strict";
 
+function setTime(el, multiplier = 30, min = 0) {
+    const newTime = Math.max(Math.random() * multiplier, min);
+    el.style.setProperty('--animation-time', newTime + 's');
+    setTimeout(() => setTime(el, multiplier, min), (newTime + Math.random() * 5) * 1_000);
+}
+
+function setBlue(el) {
+    if (!el.className.includes('blue') && Math.random() > 0.9) {
+        el.classList.add('blue');
+        setTimeout(() => {
+            el.classList.remove('blue');
+            setBlue(el);
+        }, Math.min(Math.random() * 2_500, 500));
+    } else {
+        setTimeout(() => setBlue(el), Math.random() * 30 * 1000)
+    }
+}
+
 function setHeading() {
     document.getElementById('ad').appendChild(document.createTextNode('After Dark!'))
-    document.title = 'nothing much.';
     const h = document.getElementById('h')
+    document.title = 'nothing much.';
     document.title.split("").forEach((c, i) => {
         const el = document.createElement('span');
         el.appendChild(document.createTextNode(c));
@@ -11,33 +29,15 @@ function setHeading() {
         h.appendChild(el);
         setTimeout(() => {
             el.classList.remove('o0');
-            if (c !== ' ') setTimeout(() => dim(el), Math.min(Math.random() * 2000, 500));
-        }, (i + 1) * 100);
+            setTimeout(() => {
+                el.classList.add('newDim');
+                setTime(el);
+                setBlue(el);
+            }, 500);
+
+        }, (i + 1) * 200);
     });
-}
-
-function dim(el) {
-    if (!el.className.includes('blue') && Math.random() > 0.9) {
-        el.classList.add('blue');
-        setTimeout(() => el.classList.remove('blue'), Math.min(Math.random() * 2_500, 500));
-    }
-
-    if (!el.className.includes('flicker') && Math.random() > 0.99) {
-        el.classList.remove('dim');
-        el.classList.add('flicker');
-        setTimeout(() => {
-            el.classList.remove('flicker');
-            dim(el);
-        }, Math.min(1_000, Math.random() * 5_000));
-    } else if (!el.className.includes('dim') && Math.random() > 0.5) {
-        el.classList.add('dim');
-        setTimeout(() => {
-            el.classList.remove('dim');
-            dim(el);
-        }, Math.min(Math.random() * 1000, 500));
-    } else {
-        setTimeout(() => dim(el), Math.random() * 20_000);
-    }
+    setTime(h, 100, 30);
 }
 
 function ad() {
@@ -71,7 +71,8 @@ function onLoad() {
         if (pressedCodes.length > 0 && event.code === pressedCodes[0]) {
             pressedCodes.shift();
             if (pressedCodes.length === 0) {
-                alert('i would like to pay for the repairs to the Deluxo.');
+                alert('I would like to pay for the repairs to the Deluxo.');
+                ad();
                 pressedCodes = [...keyCodes];
             }
         } else if (pressedCodes.length !== keyCodes) {

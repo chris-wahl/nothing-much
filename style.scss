@@ -1,0 +1,193 @@
+@mixin dimbase {
+    0%, 99% {
+        opacity: 1;
+    }
+}
+
+@mixin boxshadow($color) {
+    box-shadow: 0 0 11px 3px $color, inset 0 0 8px $color;
+}
+
+@mixin textshadow($positions, $color) {
+    $value: ();
+    @each $position in $positions {
+        $shadow: 0 0 $position $color;
+        $value: append($value, $shadow, comma);
+    }
+    text-shadow: $value;
+}
+
+@keyframes dimAnimation {
+    @include dimbase;
+    100% {opacity: 0.6; }
+}
+
+@keyframes dimAnimationDark {
+    @include dimbase;
+    100% {opacity: 0; }
+}
+
+@keyframes borderFlicker {
+    0%, 43.5%, 44.5%, 89%, 91%, 95%, 96% {
+        border-color: $blue;
+        @include boxshadow($blue);
+    }
+    44%, 90%, 95.5% {
+        $color: rgba($blue, 0.5);
+        border-color: $color;
+        @include boxshadow($color);
+    }
+}
+
+@keyframes adColor {
+    0% {
+        color: rgba(255, 228, 5, 0.71);
+    }
+    79% {
+        color: rgba(255, 228, 5, 0.71);
+    }
+    79.5% {
+        color: white
+    }
+    80% {
+        color: rgba(255, 228, 5, 0.71);
+    }
+    81% {
+        color: white
+    }
+    84% {
+        color: rgba(255, 228, 5, 0.71);
+    }
+    84.5% {
+        color: white
+    }
+    85% {
+        color: rgba(255, 228, 5, 0.71);
+    }
+}
+
+$blue: #0c85fd;
+$blue_for_dark: #9dcbff;
+$incandescent: rgba(255, 228, 5, 0.71);
+$yellow: rgba(253,249,235,1);
+
+body {
+    background-color: #f7f7f7;
+    text-align: center;
+    transition: 1s background-color;
+    * {
+        transition: 0.5s;
+        .blue {
+            color: $blue;
+        }
+    }
+
+    #b {
+        margin-top: 3vh;
+    }
+
+    #h {
+        font-family: 'PT Mono', monospace;
+        cursor: pointer;
+        margin-left: auto;
+        margin-right: auto;
+        width: min(100vw, 10em);
+        border: 2px solid rgba(0,0,0,0);
+        &:hover, &:active {
+            transition: 1s border-color;
+            border-bottom-color: #000;
+        }
+        border-top-right-radius: 1em;
+        border-top-left-radius: 1em;
+    }
+
+    #ad {
+        height: 0;
+        width: 5em;
+        margin-left: 50vw;
+        margin-right: auto;
+        margin-top: -1em;
+        animation: adColor 30s ease alternate infinite;
+        opacity: 0;
+        color: $incandescent;
+        font-family: 'Dancing Script', cursive;
+        font-weight: 800;
+        text-shadow: 0 0 12px #9dcbff;
+    }
+
+
+    section {
+        width: 10em;
+        font-weight: 800;
+        margin: 10em auto;
+        opacity: 0.5;
+    }
+
+    .newDim {
+        animation: dimAnimation var(--animation-time) ease alternate infinite;
+    }
+
+    &.dark {
+
+        #b {
+            // Avoid setting directly on #h as the animation:
+            // can override the transition time
+            margin-top: 10vh;
+        }
+
+        background-color: black;
+        color: white;
+
+        * .newDim {
+            animation-name: dimAnimationDark;
+        }
+
+        * .blue {
+            color: $blue_for_dark;
+        }
+
+        %hover {
+            $hoverwhite: rgba(255, 255, 255, 0.9);
+            @include textshadow([7px, 12px, 21px], $hoverwhite);
+            color: $hoverwhite;
+        }
+        #h {
+            $positions: 7px, 12px, 21px;
+            @include textshadow($positions, $incandescent);
+            color: $yellow;
+            &:hover {
+                @extend %hover;
+                border-color: $blue_for_dark;
+            }
+            .blue {
+                @include textshadow([7px, 10px, 12px, 15px, 21px], $blue);
+            }
+
+            --animation-time: 30s;
+            animation: borderFlicker var(--animation-time) ease-in-out infinite;
+            border: 2px solid $blue;
+            padding: .2em;
+            border-radius: 1em;
+        }
+        #ad {
+            opacity: 1;
+            &:hover {
+                @extend %hover;
+            }
+        }
+
+        section {
+            text-shadow: 0 0 12px $blue_for_dark;
+            opacity: 0.8;
+        }
+    }
+}
+
+.o0 {
+    opacity: 0;
+}
+
+:root {
+    --animation-time: 30s;
+}
+
