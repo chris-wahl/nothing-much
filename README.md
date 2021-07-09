@@ -7,3 +7,5 @@ To generate hashes:
 `openssl dgst -sha384 -binary FILENAME.js | openssl base64 -A`
 
 Minified with [minify](https://www.npmjs.com/package/minify).
+
+Mozilla seems to think it's [alright](https://observatory.mozilla.org/analyze/nothingmuch.net);
