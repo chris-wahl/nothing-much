@@ -1,3 +1,5 @@
+// 2021 Christopher Wahl https://github.com/chris-wahl
+
 "use strict";
 
 function setTime(el, multiplier = 30, min = 0) {
@@ -61,8 +63,10 @@ function onLoad() {
     const keyCodes = ['ArrowUp', 'ArrowUp', 'ArrowDown', "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "KeyB", "KeyA", "Enter"];
     let pressedCodes = [...keyCodes];
     setHeading();
-    setTimeout(() => setBody('b1', 'Well...'), delay);
-    setTimeout(() => setBody('b2', 'What more were you expecting?', 100), delay * 2);
+    setTimeout(() => {
+        setBody('b1', 'Well...');
+        setTimeout(() => setBody('b2', 'What more were you expecting?', 100), delay / 2);
+    }, delay);
 
     h.addEventListener('click', ad);
     if (Math.random() > 0.999) ad();
