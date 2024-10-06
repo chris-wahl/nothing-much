@@ -6,7 +6,7 @@ To generate hashes:
 
 `openssl dgst -sha384 -binary FILENAME.js | openssl base64 -A`
 
-Minified with [uglify-js](https://github.com/mishoo/UglifyJS#readme). Prettied up with [Sass](https://sass-lang.com/). Mozilla seems to think it's [alright](https://observatory.mozilla.org/analyze/nothingmuch.net).
+Minified with [uglify-js](https://github.com/mishoo/UglifyJS#readme). Prettied up with [Sass](https://sass-lang.com/). Mozilla seems to think it's [alright](https://developer.mozilla.org/en-US/observatory/analyze?host=nothingmuch.net).
 
 ```shell
 uglifyjs --compress --mangle -- index.js > index.min.js && sass style.scss style.min.css --style compressed --no-source-map
